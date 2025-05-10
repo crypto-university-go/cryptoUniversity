@@ -59,7 +59,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Crypto Basics for Beginners</h1>   
+        <h1>Crypto Basics for Beginners</h1>
         <form id="registration-form">
             <label for="pseudonym">Псевдоним:</label>
             <input type="text" id="pseudonym" name="pseudonym" required>
@@ -80,43 +80,42 @@
         </div>
     </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC6XCe8iiLsMAp9katV_5CGwAkY16NzNlc",
-      authDomain: "cryptouniversity-f880a.firebaseapp.com",
-      projectId: "cryptouniversity-f880a",
-      storageBucket: "cryptouniversity-f880a.appspot.com",
-      messagingSenderId: "186552916315",
-      appId: "1:186552916315:web:6eba00d8df6f35b1bae27e"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyC6XCe8iiLsMAp9katV_5CGwAkY16NzNlc",
+            authDomain: "cryptouniversity-f880a.firebaseapp.com",
+            projectId: "cryptouniversity-f880a",
+            storageBucket: "cryptouniversity-f880a.appspot.com",
+            messagingSenderId: "186552916315",
+            appId: "1:186552916315:web:6eba00d8df6f35b1bae27e"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-    document.getElementById("registration-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const pseudonym = document.getElementById("pseudonym").value;
-      const email = document.getElementById("email").value;
-      const phone = document.getElementById("phone").value;
-      const promo = document.getElementById("promo_code").value;
+        document.getElementById("registration-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const pseudonym = document.getElementById("pseudonym").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const promo = document.getElementById("promo_code").value;
 
-      try {
-        await addDoc(collection(db, "registrations"), {
-          pseudonym,
-          email,
-          phone,
-          promo,
-          timestamp: new Date()
+            try {
+                await addDoc(collection(db, "registrations"), {
+                    pseudonym,
+                    email,
+                    phone,
+                    promo,
+                    timestamp: new Date()
+                });
+                alert("Успешна регистрация!");
+            } catch (err) {
+                alert("Грешка при регистрация: " + err.message);
+            }
         });
-        alert("Успешна регистрация!");
-      } catch (err) {
-        alert("Грешка при регистрация: " + err.message);
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
-
