@@ -96,26 +96,32 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        document.getElementById("registration-form").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const pseudonym = document.getElementById("pseudonym").value;
-            const email = document.getElementById("email").value;
-            const phone = document.getElementById("phone").value;
-            const promo = document.getElementById("promo_code").value;
 
-            try {
-                await addDoc(collection(db, "registrations"), {
-                    pseudonym,
-                    email,
-                    phone,
-                    promo,
-                    timestamp: new Date()
-                });
-                alert("Успешна регистрация!");
-            } catch (err) {
-                alert("Грешка при регистрация: " + err.message);
-            }
-        });
+document.getElementById("registration-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const pseudonym = document.getElementById("pseudonym").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+    const promo = document.getElementById("promo_code").value;
+
+    // Generate a random 32-bit code as an 8-character hex string
+    const randomCode = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).padStart(8, '0');
+
+    try {
+        await addDoc(collection(db, "registrations"), {
+            pseudonym,
+            email,
+            phone,
+            promo,
+            code: randomCode,
+            timestamp: new Date()
+        });
+        alert("Успешна регистрация! Вашият код е: " + randomCode);
+    } catch (err) {
+        alert("Грешка при регистрация: " + err.message);
+    }
+});
+
     </script>
 </body>
 </html>
