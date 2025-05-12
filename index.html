@@ -83,7 +83,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-
+        import { query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        
         const firebaseConfig = {
             apiKey: "AIzaSyC6XCe8iiLsMAp9katV_5CGwAkY16NzNlc",
             authDomain: "cryptouniversity-f880a.firebaseapp.com",
@@ -97,17 +98,34 @@
         const db = getFirestore(app);
 
 
+
+
+
 document.getElementById("registration-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const pseudonym = document.getElementById("pseudonym").value;
-    const email = document.getElementById("email").value;
-    const phone = document.getElementById("phone").value;
-    const promo = document.getElementById("promo_code").value;
 
-    // Generate a random 32-bit code as an 8-character hex string
-    const randomCode = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).padStart(8, '0');
+    const pseudonym = document.getElementById("pseudonym").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const promo = document.getElementById("promo_code").value.trim();
+
+    if (!isValidName(pseudonym)) {
+        alert("Моля, въведете само букви в полето за псевдоним.");
+        return;
+    }
 
     try {
+        // Check if email already exists
+        const q = query(collection(db, "registrations"), where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            alert("Този имейл вече е регистриран.");
+            return;
+        }
+
+        const randomCode = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).padStart(8, '0');
+
         await addDoc(collection(db, "registrations"), {
             pseudonym,
             email,
@@ -116,11 +134,13 @@ document.getElementById("registration-form").addEventListener("submit", async (e
             code: randomCode,
             timestamp: new Date()
         });
+
         alert("Успешна регистрация! Вашият код е: " + randomCode);
     } catch (err) {
         alert("Грешка при регистрация: " + err.message);
     }
 });
+
 
     </script>
 </body>
