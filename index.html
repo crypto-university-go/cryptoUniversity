@@ -118,7 +118,8 @@ document.getElementById("registration-form").addEventListener("submit", async (e
     const email = document.getElementById("email").value.trim();
     const phone = document.getElementById("phone").value.trim();
     const promo = document.getElementById("promo_code").value.trim();
-
+    const paid = "no";
+    
     if (!isValidName(pseudonym)) {
         alert("Моля, въведете само букви в полето за псевдоним.");
         return;
@@ -167,6 +168,7 @@ document.getElementById("registration-form").addEventListener("submit", async (e
             phone,
             promo,
             code: randomCode,
+            paid,
             timestamp: new Date()
         });
 
