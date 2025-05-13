@@ -123,7 +123,7 @@ document.getElementById("registration-form").addEventListener("submit", async (e
     }
 
         
-if (!isValidPhone(phone)) {
+if (phone && (!isValidPhone(phone))) {
     alert("Моля, въведете само цифри в полето за телефон.");
     return;
 }
