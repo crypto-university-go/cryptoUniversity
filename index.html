@@ -85,12 +85,13 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-    import FingerprintJS from 'https://openfpcdn.io/fingerprintjs/v3/es.js';
-
+    
     async function main() {
         const fp = await FingerprintJS.load();
         const result = await fp.get();
         const visitorId = result.visitorId;
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs/3.3.6/fp.min.js"></script>
 
         const firebaseConfig = {
             apiKey: "AIzaSyC6XCe8iiLsMAp9katV_5CGwAkY16NzNlc",
@@ -100,7 +101,7 @@
             messagingSenderId: "186552916315",
             appId: "1:186552916315:web:6eba00d8df6f35b1bae27e"
         };
-
+    
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
