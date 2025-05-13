@@ -81,11 +81,11 @@
         </div>
     </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs/3.3.6/fp.min.js"></script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-    
+    import FingerprintJS from 'https://cdn.jsdelivr.net/npm/@
+        
     async function main() {
         const fp = await FingerprintJS.load();
         const result = await fp.get();
