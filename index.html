@@ -138,6 +138,7 @@ if (phone && (!isValidPhone(phone))) {
             alert("Този имейл вече е регистриран.");
             return;
         }
+    }
     try {
         // Check if pseudonim already exists
         const q = query(collection(db, "registrations"), where("pseudonym", "==", pseudonym));
@@ -147,7 +148,7 @@ if (phone && (!isValidPhone(phone))) {
             alert("Този псевдоним вече е регистриран.");
             return;
         }
-        
+    }
 function generatePromoCode(length = 50) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
