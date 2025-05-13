@@ -105,6 +105,10 @@ function isValidName(name) {
     return /^[A-Za-zА-Яа-яЁё]+$/.test(name);
 }
 
+function isValidPhone(phone) {
+    return /^[0-9]+$/.test(phone);
+}
+
 document.getElementById("registration-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -117,6 +121,12 @@ document.getElementById("registration-form").addEventListener("submit", async (e
         alert("Моля, въведете само букви в полето за псевдоним.");
         return;
     }
+
+        
+if (!isValidPhone(phone)) {
+    alert("Моля, въведете само цифри в полето за телефон.");
+    return;
+}
 
     try {
         // Check if email already exists
