@@ -110,71 +110,72 @@ function isValidPhone(phone) {
     return /^[0-9]+$/.test(phone);
 }
 
+
 document.getElementById("registration-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
+    e.preventDefault();
 
-    const pseudonym = document.getElementById("pseudonym").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const promo = document.getElementById("promo_code").value.trim();
+    const pseudonym = document.getElementById("pseudonym").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const promo = document.getElementById("promo_code").value.trim();
 
-    if (!isValidName(pseudonym)) {
-        alert("Моля, въведете само букви в полето за псевдоним.");
-        return;
-    }
-
-        
-if (phone && (!isValidPhone(phone))) {
-    alert("Моля, въведете само цифри в полето за телефон.");
-    return;
-}
-
-    try {
-        // Check if email already exists
-        const q = query(collection(db, "registrations"), where("email", "==", email));
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-            alert("Този имейл вече е регистриран.");
-            return;
-        }
-    }
-    try {
-        // Check if pseudonim already exists
-        const q = query(collection(db, "registrations"), where("pseudonym", "==", pseudonym));
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-            alert("Този псевдоним вече е регистриран.");
-            return;
-        }
-    }
-function generatePromoCode(length = 50) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    if (!isValidName(pseudonym)) {
+        alert("Моля, въведете само букви в полето за псевдоним.");
+        return;
     }
-    return result;
-}
 
-const randomCode = generatePromoCode();
+    if (phone && !isValidPhone(phone)) {
+        alert("Моля, въведете само цифри в полето за телефон.");
+        return;
+    }
 
+    try {
+        // Check if email already exists
+        const emailQuery = query(collection(db, "registrations"), where("email", "==", email));
+        const emailSnapshot = await getDocs(emailQuery);
 
-        await addDoc(collection(db, "registrations"), {
-            pseudonym,
-            email,
-            phone,
-            promo,
-            code: randomCode,
-            timestamp: new Date()
-        });
+        if (!emailSnapshot.empty) {
+            alert("Този имейл вече е регистриран.");
+            return;
+        }
 
-        alert("Успешна регистрация! Вашият код за препоръка е: " + randomCode);
-    } catch (err) {
-        alert("Грешка при регистрация: " + err.message);
-    }
+        // Check if pseudonym already exists
+        const pseudonymQuery = query(collection(db, "registrations"), where("pseudonym", "==", pseudonym));
+        const pseudonymSnapshot = await getDocs(pseudonymQuery);
+
+        if (!pseudonymSnapshot.empty) {
+            alert("Този псевдоним вече е регистриран.");
+            return;
+        }
+
+        // Generate promo code
+        function generatePromoCode(length = 50) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        const randomCode = generatePromoCode();
+
+        // Save to Firestore
+        await addDoc(collection(db, "registrations"), {
+            pseudonym,
+            email,
+            phone,
+            promo,
+            code: randomCode,
+            timestamp: new Date()
+        });
+
+        alert("Успешна регистрация! Вашият код за препоръка е: " + randomCode);
+    } catch (err) {
+        alert("Грешка при регистрация: " + err.message);
+    }
 });
+
 
 
     </script>
