@@ -56,6 +56,7 @@
             color: #888;
         }
     </style>
+    <script src="https://openfpcdn.io/fingerprintjs/v3"></script>
 </head>
 <body>
     <div class="container">
@@ -86,6 +87,16 @@
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         
+        const fpPromise = FingerprintJS.load();
+
+        let visitorId = "";
+
+        fpPromise
+          .then(fp => fp.get())
+          .then(result => {
+            visitorId = result.visitorId;
+        });
+    
         const firebaseConfig = {
             apiKey: "AIzaSyC6XCe8iiLsMAp9katV_5CGwAkY16NzNlc",
             authDomain: "cryptouniversity-f880a.firebaseapp.com",
@@ -119,6 +130,19 @@ document.getElementById("registration-form").addEventListener("submit", async (e
     const phone = document.getElementById("phone").value.trim();
     const promo = document.getElementById("promo_code").value.trim();
     const paid = "no";
+
+    const fingerprintQuery = query(collection(db, "registrations"), where("fingerprint", "==", visitorId));
+
+
+    // Check if fingerprint already has 3 or more registrations
+    const fingerprintQuery = query(collection(db, "registrations"), where("fingerprint", "==", visitorId));
+    const fingerprintSnapshot = await getDocs(fingerprintQuery);
+
+    if (fingerprintSnapshot.size >= 3) {
+        alert("Достигнат е лимитът от 3 регистрации от това устройство.");
+        return;
+    }
+
     
     if (!isValidName(pseudonym)) {
         alert("Моля, въведете само букви в полето за псевдоним.");
@@ -169,6 +193,7 @@ document.getElementById("registration-form").addEventListener("submit", async (e
             promo,
             code: randomCode,
             paid,
+            fingerprint: visitorId,
             timestamp: new Date()
         });
 
