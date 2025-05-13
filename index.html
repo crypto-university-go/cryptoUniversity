@@ -138,7 +138,7 @@ if (phone && (!isValidPhone(phone))) {
             return;
         }
 
-        const randomCode = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).padStart(8, '0');
+        const randomCode = Math.floor(Math.random() * 0xFFFFFFFF).toString(50).padStart(8, '0');
 
         await addDoc(collection(db, "registrations"), {
             pseudonym,
@@ -149,7 +149,7 @@ if (phone && (!isValidPhone(phone))) {
             timestamp: new Date()
         });
 
-        alert("Успешна регистрация! Вашият код е: " + randomCode);
+        alert("Успешна регистрация! Вашият код за препоръка е: " + randomCode);
     } catch (err) {
         alert("Грешка при регистрация: " + err.message);
     }
