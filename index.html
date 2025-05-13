@@ -84,7 +84,8 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-    import FingerprintJS from 'https://cdn.jsdelivr.net/npm/@
+    import FingerprintJS from 'https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.mjs';
+
         
     async function main() {
         const fp = await FingerprintJS.load();
