@@ -89,13 +89,12 @@
         
         const fpPromise = FingerprintJS.load();
 
-        let visitorId = "";
 
-        fpPromise
-          .then(fp => fp.get())
-          .then(result => {
-            visitorId = result.visitorId;
-        });
+        // Ensure visitorId is ready
+        const fp = await fpPromise;
+        const result = await fp.get();
+        const visitorId = result.visitorId;
+
     
         const firebaseConfig = {
             apiKey: "AIzaSyC6XCe8iiLsMAp9katV_5CGwAkY16NzNlc",
@@ -130,10 +129,7 @@ document.getElementById("registration-form").addEventListener("submit", async (e
     const phone = document.getElementById("phone").value.trim();
     const promo = document.getElementById("promo_code").value.trim();
     const paid = "no";
-
-    const fingerprintQuery = query(collection(db, "registrations"), where("fingerprint", "==", visitorId));
-
-
+    
     // Check if fingerprint already has 3 or more registrations
     const fingerprintQuery = query(collection(db, "registrations"), where("fingerprint", "==", visitorId));
     const fingerprintSnapshot = await getDocs(fingerprintQuery);
