@@ -56,7 +56,6 @@
             color: #888;
         }
     </style>
-    <script src="https://openfpcdn.io/fingerprintjs/v3"></script>
 </head>
 <body>
     <div class="container">
@@ -86,6 +85,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import FingerprintJS from 'https://openfpcdn.io/fingerprintjs/v3/es.js';
         
         const fpPromise = FingerprintJS.load();
 
