@@ -67,7 +67,8 @@
             <label for="email">Имейл:</label>
             <input type="email" id="email" name="email" maxlength="32" required>
 
-            <label for="phone">Телефонен номер:(по избор) <span style="color: #888; font-size: 0.9em;">(по избор)</span></label
+            
+            <label for="phone">Телефонен номер <span style="color: #888; font-size: 0.9em;">(по избор)</span>:</label>
             <input type="tel" id="phone" name="phone" maxlength="32">
 
             <label for="promo_code">Промо код:</label>
@@ -138,7 +139,18 @@ if (phone && (!isValidPhone(phone))) {
             return;
         }
 
-        const randomCode = Math.floor(Math.random() * 0xFFFFFFFF).toString(50).padStart(8, '0');
+        
+function generatePromoCode(length = 50) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
+const randomCode = generatePromoCode();
+
 
         await addDoc(collection(db, "registrations"), {
             pseudonym,
