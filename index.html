@@ -101,10 +101,10 @@
 
 
 
-
 function isValidName(name) {
-    return /^[A-Za-zА-Яа-яЁё]+$/.test(name);
+    return /^[A-Za-zА-Яа-яЁё\s]+$/.test(name);
 }
+
 
 function isValidPhone(phone) {
     return /^[0-9]+$/.test(phone);
@@ -141,13 +141,13 @@ document.getElementById("registration-form").addEventListener("submit", async (e
         }
 
         // Check if pseudonym already exists
-        const pseudonymQuery = query(collection(db, "registrations"), where("pseudonym", "==", pseudonym));
+       /* const pseudonymQuery = query(collection(db, "registrations"), where("pseudonym", "==", pseudonym));
         const pseudonymSnapshot = await getDocs(pseudonymQuery);
 
         if (!pseudonymSnapshot.empty) {
             alert("Този псевдоним вече е регистриран.");
             return;
-        }
+        }*/
 
         // Generate promo code
         function generatePromoCode(length = 50) {
