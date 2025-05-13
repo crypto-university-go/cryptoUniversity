@@ -102,80 +102,80 @@
 
 
 function isValidName(name) {
-    return /^[A-Za-zА-Яа-яЁё\s]+$/.test(name);
+    return /^[A-Za-zА-Яа-яЁё\s]+$/.test(name);
 }
 
 
 function isValidPhone(phone) {
-    return /^[0-9]+$/.test(phone);
+    return /^[0-9]+$/.test(phone);
 }
 
 
 document.getElementById("registration-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
+    e.preventDefault();
 
-    const pseudonym = document.getElementById("pseudonym").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const promo = document.getElementById("promo_code").value.trim();
+    const pseudonym = document.getElementById("pseudonym").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const promo = document.getElementById("promo_code").value.trim();
     const paid = "no";
     
-    if (!isValidName(pseudonym)) {
-        alert("Моля, въведете само букви в полето за псевдоним.");
-        return;
-    }
+    if (!isValidName(pseudonym)) {
+        alert("Моля, въведете само букви в полето за псевдоним.");
+        return;
+    }
 
-    if (phone && !isValidPhone(phone)) {
-        alert("Моля, въведете само цифри в полето за телефон.");
-        return;
-    }
+    if (phone && !isValidPhone(phone)) {
+        alert("Моля, въведете само цифри в полето за телефон.");
+        return;
+    }
 
-    try {
-        // Check if email already exists
-        const emailQuery = query(collection(db, "registrations"), where("email", "==", email));
-        const emailSnapshot = await getDocs(emailQuery);
+    try {
+        // Check if email already exists
+        const emailQuery = query(collection(db, "registrations"), where("email", "==", email));
+        const emailSnapshot = await getDocs(emailQuery);
 
-        if (!emailSnapshot.empty) {
-            alert("Този имейл вече е регистриран.");
-            return;
-        }
+        if (!emailSnapshot.empty) {
+            alert("Този имейл вече е регистриран.");
+            return;
+        }
 
-        // Check if pseudonym already exists
-       /* const pseudonymQuery = query(collection(db, "registrations"), where("pseudonym", "==", pseudonym));
-        const pseudonymSnapshot = await getDocs(pseudonymQuery);
+        // Check if pseudonym already exists
+       /* const pseudonymQuery = query(collection(db, "registrations"), where("pseudonym", "==", pseudonym));
+        const pseudonymSnapshot = await getDocs(pseudonymQuery);
 
-        if (!pseudonymSnapshot.empty) {
-            alert("Този псевдоним вече е регистриран.");
-            return;
-        }*/
+        if (!pseudonymSnapshot.empty) {
+            alert("Този псевдоним вече е регистриран.");
+            return;
+        }*/
 
-        // Generate promo code
-        function generatePromoCode(length = 50) {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-        }
+        // Generate promo code
+        function generatePromoCode(length = 50) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
 
-        const randomCode = generatePromoCode();
+        const randomCode = generatePromoCode();
 
-        // Save to Firestore
-        await addDoc(collection(db, "registrations"), {
-            pseudonym,
-            email,
-            phone,
-            promo,
-            code: randomCode,
+        // Save to Firestore
+        await addDoc(collection(db, "registrations"), {
+            pseudonym,
+            email,
+            phone,
+            promo,
+            code: randomCode,
             paid,
-            timestamp: new Date()
-        });
+            timestamp: new Date()
+        });
 
-        alert("Успешна регистрация! Вашият код за даване на препоръки е: " + randomCode);
-    } catch (err) {
-        alert("Грешка при регистрация: " + err.message);
-    }
+        alert("Успешна регистрация! Вашият код за даване на препоръки е: " + randomCode);
+    } catch (err) {
+        alert("Грешка при регистрация: " + err.message);
+    }
 });
 
 
