@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bg">
 <head>
@@ -6,55 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Basics for Beginners</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="submit"] {
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        input[type="submit"] {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-        .promo-code {
-            margin-top: 10px;
-            text-align: center;
-            color: #888;
-        }
+        body
+{
+  font - family : Arial, sans - serif;
+  background - color : #f4f4f4;
+margin:
+  0;
+padding:
+  0;
+}
+.container
+{
+  max - width : 600px;
+margin:
+  50px auto;
+padding:
+  20px;
+  background - color : #fff;
+  box - shadow : 0 0 10px rgba(0, 0, 0, 0.1);
+  border - radius : 8px;
+}
+h1
+{
+  text - align : center;
+color:
+# 333;
+}
+form
+{
+display:
+  flex;
+  flex - direction : column;
+}
+label
+{
+  margin - bottom : 5px;
+color:
+# 555;
+}
+input[type = "text"],
+    input[type = "email"],
+    input[type = "tel"],
+    input[type = "submit"]
+{
+padding:
+  10px;
+  margin - bottom : 15px;
+border:
+  1px solid #ddd;
+  border - radius : 4px;
+}
+input[type = "submit"]
+{
+  background - color : #28a745;
+color:
+#fff;
+border:
+  none;
+cursor:
+  pointer;
+}
+input[type = "submit"] : hover
+{
+  background - color : #218838;
+}
+.promo - code
+{
+  margin - top : 10px;
+  text - align : center;
+color:
+# 888;
+}
     </style>
 </head>
 <body>
@@ -82,69 +103,77 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-        import { query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyC6XCe8iiLsMAp9katV_5CGwAkY16NzNlc",
-            authDomain: "cryptouniversity-f880a.firebaseapp.com",
-            projectId: "cryptouniversity-f880a",
-            storageBucket: "cryptouniversity-f880a.appspot.com",
-            messagingSenderId: "186552916315",
-            appId: "1:186552916315:web:6eba00d8df6f35b1bae27e"
-        };
+    import{getFirestore, collection, addDoc} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import{query, where, getDocs} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    const firebaseConfig = {
+      apiKey : "AIzaSyC6XCe8iiLsMAp9katV_5CGwAkY16NzNlc",
+      authDomain : "cryptouniversity-f880a.firebaseapp.com",
+      projectId : "cryptouniversity-f880a",
+      storageBucket : "cryptouniversity-f880a.appspot.com",
+      messagingSenderId : "186552916315",
+      appId : "1:186552916315:web:6eba00d8df6f35b1bae27e"
+    };
 
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
+    function isValidName(name)
+    {
+      return / ^[A - Za - zА - Яа - яЁё] + $ /.test(name);
+    }
 
+    document.getElementById("registration-form").addEventListener(
+        "submit", async(e) = > {
+          			 e.preventDefault();
 
-function isValidName(name) {
-return /^[A-Za-zА-Яа-яЁё]+$/.test(name);
-}
+          const pseudonym = document.getElementById("pseudonym").value.trim();
+          			 const email = document.getElementById("email").value.trim();
+          			 const phone = document.getElementById("phone").value.trim();
+          			 const promo = document.getElementById("promo_code").value.trim();
 
-document.getElementById("registration-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
+          			 if (!isValidName(pseudonym))
+          {
+            							 alert("Моля, въведете само букви в полето за псевдоним.");
+            							 return;
+            			
+          }
 
-    const pseudonym = document.getElementById("pseudonym").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const promo = document.getElementById("promo_code").value.trim();
+          			
+          try
+          {
+            							 // Check if email already exists
+							 const q = query(collection(db, "registrations"), where("email", "==", email));
+            							 const querySnapshot = await getDocs(q);
 
-    if (!isValidName(pseudonym)) {
-        alert("Моля, въведете само букви в полето за псевдоним.");
-        return;
-    }
+            							 if (!querySnapshot.empty)
+            {
+              											 alert("Този имейл вече е регистриран.");
+              											 return;
+              							
+            }
 
-    try {
-        // Check if email already exists
-        const q = query(collection(db, "registrations"), where("email", "==", email));
-        const querySnapshot = await getDocs(q);
+            							 const randomCode = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).padStart(8, '0');
 
-        if (!querySnapshot.empty) {
-            alert("Този имейл вече е регистриран.");
-            return;
-        }
+            							 await addDoc(collection(db, "registrations"), {
+											 pseudonym,
+											 email,
+											 phone,
+											 promo,
+											 code : randomCode,
+											 timestamp : new Date()
+							 });
 
-        const randomCode = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).padStart(8, '0');
+            							 alert("Успешна регистрация! Вашият код е: " + randomCode);
+            			
+          }
+          catch (err)
+          {
+            							 alert("Грешка при регистрация: " + err.message);
+            			
+          }
+        });
 
-        await addDoc(collection(db, "registrations"), {
-            pseudonym,
-            email,
-            phone,
-            promo,
-            code: randomCode,
-            timestamp: new Date()
-        });
-
-        alert("Успешна регистрация! Вашият код е: " + randomCode);
-    } catch (err) {
-        alert("Грешка при регистрация: " + err.message);
-    }
-});
-
-
-    </script>
+</script>
 </body>
 </html>
